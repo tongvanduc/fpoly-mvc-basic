@@ -57,7 +57,7 @@ if (!function_exists('insert')) {
 if (!function_exists('listAll')) {
     function listAll($tableName) {
         try {
-            $sql = "SELECT * FROM $tableName";
+            $sql = "SELECT * FROM $tableName ORDER BY id DESC";
 
             $stmt = $GLOBALS['conn']->prepare($sql);
 
@@ -111,7 +111,7 @@ if (!function_exists('update')) {
 }
 
 if (!function_exists('delete')) {
-    function delete($tableName, $id) {
+    function delete2($tableName, $id) {
         try {
             $sql = "DELETE FROM $tableName WHERE id = :id";
             
