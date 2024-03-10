@@ -24,6 +24,20 @@ match($act) {
     'user-create' => userCreate(),
     'user-update' => userUpdate($_GET['id']),
     'user-delete' => userDelete($_GET['id']),
+
+    // CRUD Category
+    'categories' => categoryListAll(),
+    'category-detail' => categoryShowOne($_GET['id']),
+    'category-create' => categoryCreate(),
+    'category-update' => categoryUpdate($_GET['id']),
+    'category-delete' => categoryDelete($_GET['id']),
+
+    // CRUD tag
+    'tags' => tagListAll(),
+    'tag-detail' => tagShowOne($_GET['id']),
+    'tag-create' => tagCreate(),
+    'tag-update' => tagUpdate($_GET['id']),
+    'tag-delete' => tagDelete($_GET['id']),
 };
 
 require_once '../commons/disconnect-db.php';
