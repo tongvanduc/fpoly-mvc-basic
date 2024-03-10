@@ -13,7 +13,7 @@ function tagListAll()
     require_once PATH_VIEW_ADMIN . 'layouts/master.php';
 }
 
-function tagshowOne($id)
+function tagShowOne($id)
 {
     $tag = showOne('tags', $id);
 

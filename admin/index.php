@@ -38,6 +38,13 @@ match($act) {
     'tag-create' => tagCreate(),
     'tag-update' => tagUpdate($_GET['id']),
     'tag-delete' => tagDelete($_GET['id']),
+
+    // CRUD author
+    'authors' => authorListAll(),
+    'author-detail' => authorShowOne($_GET['id']),
+    'author-create' => authorCreate(),
+    'author-update' => authorUpdate($_GET['id']),
+    'author-delete' => authorDelete($_GET['id']),
 };
 
 require_once '../commons/disconnect-db.php';
