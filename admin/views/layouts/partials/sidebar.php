@@ -95,4 +95,13 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
+    <!-- Nav Item - Setting -->
+    <li class="nav-item">
+        <a class="nav-link" href="<?= BASE_URL_ADMIN . '?act=setting-form' ?>">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Setting</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
 </ul>

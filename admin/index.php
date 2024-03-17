@@ -52,6 +52,10 @@ match($act) {
     'post-create' => postCreate(),
     'post-update' => postUpdate($_GET['id']),
     'post-delete' => postDelete($_GET['id']),
+
+    // Setting
+    'setting-form' => settingShowForm(),
+    'setting-save' => settingSave(),
 };
 
 require_once '../commons/disconnect-db.php';
