@@ -29,7 +29,7 @@ function tagShowOne($id)
 
 function tagCreate()
 {
-    $title = 'Danh sách tag';
+    $title = 'Thêm mới tag';
     $view = 'tags/create';
 
     if (!empty($_POST)) {
@@ -38,14 +38,7 @@ function tagCreate()
             "name" => $_POST['name'] ?? null,
         ];
 
-        $errors = validateTagCreate($data);
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            $_SESSION['data'] = $data;
-
-            header('Location: ' . BASE_URL_ADMIN . '?act=tag-create');
-            exit();
-        }
+        validateTagCreate($data);
 
         insert('tags', $data);
 
@@ -73,7 +66,13 @@ function validateTagCreate($data) {
         $errors[] = 'Name đã được sử dụng';
     }
 
-    return $errors;
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+        $_SESSION['data'] = $data;
+
+        header('Location: ' . BASE_URL_ADMIN . '?act=tag-create');
+        exit();
+    }
 }
 
 function tagUpdate($id)
@@ -92,15 +91,11 @@ function tagUpdate($id)
             "name" => $_POST['name'] ?? null,
         ];
 
-        $errors = validateTagUpdate($id, $data);
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-        } 
-        else {
-            update('tags', $id, $data);
+        validateTagUpdate($id, $data);
+         
+        update('tags', $id, $data);
 
-            $_SESSION['success'] = 'Thao tác thành công!';
-        }
+        $_SESSION['success'] = 'Thao tác thành công!';
 
         header('Location: ' . BASE_URL_ADMIN . '?act=tag-update&id=' . $id);
         exit();
@@ -124,7 +119,12 @@ function validateTagUpdate($id, $data) {
         $errors[] = 'Name đã được sử dụng';
     }
 
-    return $errors;
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+
+        header('Location: ' . BASE_URL_ADMIN . '?act=tag-update&id=' . $id);
+        exit();
+    }
 }
 
 function tagDelete($id)

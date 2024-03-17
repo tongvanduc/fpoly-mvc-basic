@@ -19,7 +19,18 @@
                 <?php foreach ($author as $fieldName => $value) : ?>
                     <tr>
                         <td><?= ucfirst($fieldName) ?></td>
-                        <td><?= $value ?></td>
+                        <td>
+                            <?php
+                                switch ($fieldName) {
+                                    case 'avatar':
+                                        echo '<img src="' . BASE_URL . $value . '" alt="" width="100px">';
+                                        break;
+                                    default:
+                                        echo $value;
+                                        break;
+                                }
+                            ?>    
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </table>

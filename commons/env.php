@@ -20,3 +20,7 @@ define('DB_USERNAME',   'root');
 define('DB_PASSWORD',   '');
 define('DB_NAME',       'mvc-basic');
 
+define('STATUS_DRAFT',      'draft');
+define('STATUS_PUBLISHED',  'published');
+
+

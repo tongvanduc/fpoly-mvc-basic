@@ -29,7 +29,7 @@ function userShowOne($id)
 
 function userCreate()
 {
-    $title = 'Danh sách User';
+    $title = 'Thêm mới User';
     $view = 'users/create';
 
     if (!empty($_POST)) {
@@ -41,14 +41,7 @@ function userCreate()
             "type" => $_POST['type'] ?? null,
         ];
 
-        $errors = validateUserCreate($data);
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            $_SESSION['data'] = $data;
-
-            header('Location: ' . BASE_URL_ADMIN . '?act=user-create');
-            exit();
-        }
+        validateUserCreate($data);
 
         insert('users', $data);
 
@@ -101,7 +94,13 @@ function validateUserCreate($data) {
         $errors[] = 'Trường type phải là 0 or 1';
     }
 
-    return $errors;
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+        $_SESSION['data'] = $data;
+
+        header('Location: ' . BASE_URL_ADMIN . '?act=user-create');
+        exit();
+    }
 }
 
 function userUpdate($id)
@@ -123,15 +122,11 @@ function userUpdate($id)
             "type" => $_POST['type'] ?? null,
         ];
 
-        $errors = validateUserUpdate($id, $data);
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-        } 
-        else {
-            update('users', $id, $data);
+        validateUserUpdate($id, $data);
+         
+        update('users', $id, $data);
 
-            $_SESSION['success'] = 'Thao tác thành công!';
-        }
+        $_SESSION['success'] = 'Thao tác thành công!';
 
         header('Location: ' . BASE_URL_ADMIN . '?act=user-update&id=' . $id);
         exit();
@@ -180,7 +175,12 @@ function validateUserUpdate($id, $data) {
         $errors[] = 'Trường type phải là 0 or 1';
     }
 
-    return $errors;
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+
+        header('Location: ' . BASE_URL_ADMIN . '?act=user-update&id=' . $id);
+        exit();
+    }
 }
 
 function userDelete($id)

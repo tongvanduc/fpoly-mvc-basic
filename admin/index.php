@@ -45,6 +45,13 @@ match($act) {
     'author-create' => authorCreate(),
     'author-update' => authorUpdate($_GET['id']),
     'author-delete' => authorDelete($_GET['id']),
+
+    // CRUD post
+    'posts' => postListAll(),
+    'post-detail' => postShowOne($_GET['id']),
+    'post-create' => postCreate(),
+    'post-update' => postUpdate($_GET['id']),
+    'post-delete' => postDelete($_GET['id']),
 };
 
 require_once '../commons/disconnect-db.php';

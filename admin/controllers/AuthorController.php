@@ -29,7 +29,7 @@ function authorShowOne($id)
 
 function authorCreate()
 {
-    $title = 'Danh sách author';
+    $title = 'Thêm mới author';
     $view = 'authors/create';
 
     if (!empty($_POST)) {
@@ -39,17 +39,10 @@ function authorCreate()
             'avatar' => $_FILES['avatar'] ?? null
         ];
 
-        $errors = validateAuthorCreate($data);
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            $_SESSION['data'] = $data;
-
-            header('Location: ' . BASE_URL_ADMIN . '?act=author-create');
-            exit();
-        }
+        validateAuthorCreate($data);
 
         $avatar = $_FILES['avatar'] ?? null;
-        if (!empty($avatar)) {
+        if (!empty($avatar) && $avatar['size'] > 0) {
             $data['avatar'] = upload_file($avatar, 'uploads/authors/');
         }
 
@@ -80,15 +73,23 @@ function validateAuthorCreate($data)
     }
 
 
-    $typeImage = ['image/png', 'image/jpg', 'image/jpeg'];
+    if (!empty($data['avatar']) && $data['avatar']['size'] > 0) {
+        $typeImage = ['image/png', 'image/jpg', 'image/jpeg'];
 
-    if ($data['avatar']['size'] > 2 * 1024 * 1024) {
-        $errors[] = 'Trường avatar có dung lượng nhỏ hơn 2M';
-    } else if (!in_array($data['avatar']['type'], $typeImage)) {
-        $errors[] = 'Trường avatar chỉ chấp nhận định dạng file: png, jpg, jpeg';
+        if ($data['avatar']['size'] > 2 * 1024 * 1024) {
+            $errors[] = 'Trường avatar có dung lượng nhỏ hơn 2M';
+        } else if (!in_array($data['avatar']['type'], $typeImage)) {
+            $errors[] = 'Trường avatar chỉ chấp nhận định dạng file: png, jpg, jpeg';
+        }
     }
 
-    return $errors;
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+        $_SESSION['data'] = $data;
+
+        header('Location: ' . BASE_URL_ADMIN . '?act=author-create');
+        exit();
+    }
 }
 
 function authorUpdate($id)
@@ -108,28 +109,25 @@ function authorUpdate($id)
             'avatar' => $_FILES['avatar'] ?? null
         ];
 
-        $errors = validateAuthorUpdate($id, $data);
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-        } else {
+        validateAuthorUpdate($id, $data);
 
-            $avatar = $_FILES['avatar'] ?? null;
-            if (!empty($avatar)) {
-                $data['avatar'] = upload_file($avatar, 'uploads/authors/');
-            }
-
-            update('authors', $id, $data);
-
-            if (!empty($avatar)                                 // Có upload file
-                && !empty($author['avatar'])                    // có giá trị
-                && !empty($data['avatar'])                      // upload file thành công
-                && file_exists(PATH_UPLOAD . $author['avatar']) // Phải còn file tồn tại trên hệ thống
-            ) {
-                 unlink(PATH_UPLOAD . $author['avatar']);
-            }
-
-            $_SESSION['success'] = 'Thao tác thành công!';
+        $avatar = $_FILES['avatar'] ?? null;
+        if (!empty($avatar)) {
+            $data['avatar'] = upload_file($avatar, 'uploads/authors/');
         }
+
+        update('authors', $id, $data);
+
+        if (
+            !empty($avatar)                                 // Có upload file
+            && !empty($author['avatar'])                    // có giá trị
+            && !empty($data['avatar'])                      // upload file thành công
+            && file_exists(PATH_UPLOAD . $author['avatar']) // Phải còn file tồn tại trên hệ thống
+        ) {
+            unlink(PATH_UPLOAD . $author['avatar']);
+        }
+
+        $_SESSION['success'] = 'Thao tác thành công!';
 
         header('Location: ' . BASE_URL_ADMIN . '?act=author-update&id=' . $id);
         exit();
@@ -153,15 +151,22 @@ function validateAuthorUpdate($id, $data)
         $errors[] = 'Name đã được sử dụng';
     }
 
-    $typeImage = ['image/png', 'image/jpg', 'image/jpeg'];
+    if (!empty($data['avatar'])) {
+        $typeImage = ['image/png', 'image/jpg', 'image/jpeg'];
 
-    if ($data['avatar']['size'] > 2 * 1024 * 1024) {
-        $errors[] = 'Trường avatar có dung lượng nhỏ hơn 2M';
-    } else if (!in_array($data['avatar']['type'], $typeImage)) {
-        $errors[] = 'Trường avatar chỉ chấp nhận định dạng file: png, jpg, jpeg';
+        if ($data['avatar']['size'] > 2 * 1024 * 1024) {
+            $errors[] = 'Trường avatar có dung lượng nhỏ hơn 2M';
+        } else if (!in_array($data['avatar']['type'], $typeImage)) {
+            $errors[] = 'Trường avatar chỉ chấp nhận định dạng file: png, jpg, jpeg';
+        }
     }
+    
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
 
-    return $errors;
+        header('Location: ' . BASE_URL_ADMIN . '?act=author-update&id=' . $id);
+        exit();
+    }
 }
 
 function authorDelete($id)
@@ -174,7 +179,8 @@ function authorDelete($id)
 
     delete2('authors', $id);
 
-    if (!empty($author['avatar'])                       // có giá trị
+    if (
+        !empty($author['avatar'])                       // có giá trị
         && file_exists(PATH_UPLOAD . $author['avatar']) // Phải còn file tồn tại trên hệ thống
     ) {
         unlink(PATH_UPLOAD . $author['avatar']);

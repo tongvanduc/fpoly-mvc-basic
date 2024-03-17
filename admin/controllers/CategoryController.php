@@ -29,7 +29,7 @@ function categoryShowOne($id)
 
 function categoryCreate()
 {
-    $title = 'Danh sách category';
+    $title = 'Thêm mới category';
     $view = 'categories/create';
 
     if (!empty($_POST)) {
@@ -38,15 +38,8 @@ function categoryCreate()
             "name" => $_POST['name'] ?? null,
         ];
 
-        $errors = validateCategoryCreate($data);
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-            $_SESSION['data'] = $data;
-
-            header('Location: ' . BASE_URL_ADMIN . '?act=category-create');
-            exit();
-        }
-
+        validateCategoryCreate($data);
+        
         insert('categories', $data);
 
         $_SESSION['success'] = 'Thao tác thành công!';
@@ -73,7 +66,13 @@ function validateCategoryCreate($data) {
         $errors[] = 'Name đã được sử dụng';
     }
 
-    return $errors;
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+        $_SESSION['data'] = $data;
+
+        header('Location: ' . BASE_URL_ADMIN . '?act=category-create');
+        exit();
+    }
 }
 
 function categoryUpdate($id)
@@ -92,15 +91,11 @@ function categoryUpdate($id)
             "name" => $_POST['name'] ?? null,
         ];
 
-        $errors = validateCategoryUpdate($id, $data);
-        if (!empty($errors)) {
-            $_SESSION['errors'] = $errors;
-        } 
-        else {
-            update('categories', $id, $data);
+        validateCategoryUpdate($id, $data);
+         
+        update('categories', $id, $data);
 
-            $_SESSION['success'] = 'Thao tác thành công!';
-        }
+        $_SESSION['success'] = 'Thao tác thành công!';
 
         header('Location: ' . BASE_URL_ADMIN . '?act=category-update&id=' . $id);
         exit();
@@ -124,7 +119,12 @@ function validateCategoryUpdate($id, $data) {
         $errors[] = 'Name đã được sử dụng';
     }
 
-    return $errors;
+    if (!empty($errors)) {
+        $_SESSION['errors'] = $errors;
+
+        header('Location: ' . BASE_URL_ADMIN . '?act=category-update&id=' . $id);
+        exit();
+    }
 }
 
 function categoryDelete($id)
