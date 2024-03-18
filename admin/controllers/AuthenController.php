@@ -1,7 +1,7 @@
 <?php 
 
 function authenShowFormLogin() {
-    if ($_POST) {
+    if (!empty($_POST)) {
         authenLogin();
     }
 
