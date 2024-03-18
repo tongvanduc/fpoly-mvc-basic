@@ -198,9 +198,10 @@ function postUpdate($id)
 
             update('posts', $id, $data);
 
-            deleteTagsByPostID($id);
-
             // Xử lý lưu Post - Tags
+
+            deleteTagsByPostID($id);
+            
             if (!empty($_POST['tags'])) {
                 foreach ($_POST['tags'] as $tagID) {
                     insert('post_tag', [
