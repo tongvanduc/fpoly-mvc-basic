@@ -302,9 +302,13 @@ function postDelete($id)
     }
 
     try {
+        $GLOBALS['conn']->beginTransaction();
+
         deleteTagsByPostID($id);
 
         delete2('posts', $id);
+
+        $GLOBALS['conn']->commit();
     } catch (Exception $e) {
         $GLOBALS['conn']->rollBack();
 
