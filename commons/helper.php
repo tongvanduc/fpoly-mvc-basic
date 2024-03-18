@@ -42,7 +42,7 @@ if (!function_exists('upload_file')) {
 }
 
 
-if (!function_exists('check_file_upload')) {
+if (!function_exists('get_file_upload')) {
     function get_file_upload($field, $default = null) {
 
         if (isset($_FILES[$field]) && $_FILES[$field]['size'] > 0) {
