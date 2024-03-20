@@ -116,10 +116,10 @@ function userUpdate($id)
 
     if (!empty($_POST)) {
         $data = [
-            "name" => $_POST['name'] ?? null,
-            "email" => $_POST['email'] ?? null,
-            "password" => $_POST['password'] ?? null,
-            "type" => $_POST['type'] ?? null,
+            "name" => $_POST['name'] ?? $user['name'],
+            "email" => $_POST['email'] ?? $user['email'],
+            "password" => $_POST['password'] ?? $user['password'],
+            "type" => $_POST['type'] ?? $user['type'],
         ];
 
         validateUserUpdate($id, $data);

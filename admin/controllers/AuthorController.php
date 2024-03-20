@@ -105,14 +105,14 @@ function authorUpdate($id)
 
     if (!empty($_POST)) {
         $data = [
-            "name" => $_POST['name'] ?? null,
-            'avatar' => $_FILES['avatar'] ?? null
+            "name" => $_POST['name'] ?? $author['name'],
+            'avatar' => $_FILES['avatar'] ?? $author['avatar']
         ];
 
         validateAuthorUpdate($id, $data);
 
         $avatar = $_FILES['avatar'] ?? null;
-        if (!empty($avatar)) {
+        if (!empty($avatar) && $avatar['size'] > 0) {
             $data['avatar'] = upload_file($avatar, 'uploads/authors/');
         }
 
@@ -151,7 +151,11 @@ function validateAuthorUpdate($id, $data)
         $errors[] = 'Name đã được sử dụng';
     }
 
-    if (!empty($data['avatar'])) {
+    if (
+        !empty($data['avatar'])
+        && is_array($data['avatar'])
+        && $data['avatar']['size'] > 0
+    ) {
         $typeImage = ['image/png', 'image/jpg', 'image/jpeg'];
 
         if ($data['avatar']['size'] > 2 * 1024 * 1024) {

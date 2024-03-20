@@ -88,7 +88,7 @@ function tagUpdate($id)
 
     if (!empty($_POST)) {
         $data = [
-            "name" => $_POST['name'] ?? null,
+            "name" => $_POST['name'] ?? $tag['name'],
         ];
 
         validateTagUpdate($id, $data);
