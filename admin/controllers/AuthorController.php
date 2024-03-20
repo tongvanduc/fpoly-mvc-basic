@@ -111,7 +111,7 @@ function authorUpdate($id)
 
         validateAuthorUpdate($id, $data);
 
-        $avatar = $_FILES['avatar'] ?? null;
+        $avatar = $data['avatar'];
         if (!empty($avatar) && $avatar['size'] > 0) {
             $data['avatar'] = upload_file($avatar, 'uploads/authors/');
         }
