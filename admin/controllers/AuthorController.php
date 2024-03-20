@@ -38,7 +38,7 @@ function authorCreate()
             'name' => $_POST['name'] ?? null,
             'avatar' => $_FILES['avatar'] ?? null
         ];
-
+        
         validateAuthorCreate($data);
 
         $avatar = $data['avatar'];
@@ -112,7 +112,7 @@ function authorUpdate($id)
         validateAuthorUpdate($id, $data);
 
         $avatar = $data['avatar'];
-        if (!empty($avatar) && $avatar['size'] > 0) {
+        if (!empty($avatar) && is_array($avatar) &&  $avatar['size'] > 0) {
             $data['avatar'] = upload_file($avatar, 'uploads/authors/');
         }
 
