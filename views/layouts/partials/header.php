@@ -4,7 +4,7 @@
         <a href="index.html" class="logo d-flex align-items-center">
             <!-- Uncomment the line below if you also wish to use an image logo -->
             <!-- <img src="<?= BASE_URL ?>assets/client/assets/img/logo.png" alt=""> -->
-            <h1>ZenBlog</h1>
+            <h1><?= $GLOBALS['settings']['logo'] ?? null ?></h1>
         </a>
 
         <nav id="navbar" class="navbar">
@@ -36,9 +36,9 @@
         </nav><!-- .navbar -->
 
         <div class="position-relative">
-            <a href="#" class="mx-2"><span class="bi-facebook"></span></a>
-            <a href="#" class="mx-2"><span class="bi-twitter"></span></a>
-            <a href="#" class="mx-2"><span class="bi-instagram"></span></a>
+            <a href="<?= $GLOBALS['settings']['link_facebook'] ?? null ?>" class="mx-2"><span class="bi-facebook"></span></a>
+            <a href="<?= $GLOBALS['settings']['link_twitter'] ?? null ?>" class="mx-2"><span class="bi-twitter"></span></a>
+            <a href="<?= $GLOBALS['settings']['link_instagram'] ?? null ?>" class="mx-2"><span class="bi-instagram"></span></a>
 
             <a href="#" class="mx-2 js-search-open"><span class="bi-search"></span></a>
             <i class="bi bi-list mobile-nav-toggle"></i>
